@@ -1,7 +1,7 @@
 const Product = require('../models/Product')
 const mongoose = require('mongoose');
 
-
+// Code For Adding a Product List Array
 exports.add_Product = (req, res) => {
     Product.insertMany(req.body).
         then(product => {
@@ -9,7 +9,7 @@ exports.add_Product = (req, res) => {
         }).catch(err => res.status(500).json({ error: err, message: 'Some Error Occured' }))
 }
 
-
+// Code For Adding a getting Product List Array
 exports.get_Product_List = (req, res) => {
     Product.find()
         .exec()

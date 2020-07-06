@@ -2,7 +2,7 @@ const User = require('../models/User');
 const Shopkeeper = require('../models/Shopkeeper')
 const bcrypt = require('bcrypt')
 
-
+// Register code for user
 exports.register = (req, res) => {
     bcrypt.hash(req.body.password, 10, (err, hash) => {
         if (err) {
@@ -13,7 +13,6 @@ exports.register = (req, res) => {
         } else {
             req.body.password = hash;
             const NewUser = new User(req.body)
-            const token = NewUser.getJwtToken();
 
             NewUser.save().then(newUser => {
                 res.status(200)
@@ -21,12 +20,13 @@ exports.register = (req, res) => {
                         success: true,
                         message: 'User SuccessFully Created',
                         name: newUser.name,
-                        token: token
+
                     })
             }).catch(err => res.status(500).json({ success: false, error: err }))
         }
     })
 }
+// Register code for registering Shopkeeper
 exports.Shopkeeper_register = (req, res) => {
     bcrypt.hash(req.body.password, 10, (err, hash) => {
         if (err) {
@@ -37,15 +37,14 @@ exports.Shopkeeper_register = (req, res) => {
         } else {
             req.body.password = hash;
             const NewShop = new Shopkeeper(req.body)
-            const token = NewShop.getJwtTokenShop();
 
             NewShop.save().then(NewShop => {
                 res.status(200)
                     .json({
                         success: true,
-                        message: 'Shopkeeper SuccessFully LoggedIn',
+                        message: 'Shopkeeper SuccessFully Created',
                         name: NewShop.name,
-                        token: token
+
                     })
             }).catch(err => res.status(500).json({ success: false, error: err }))
         }
@@ -53,7 +52,7 @@ exports.Shopkeeper_register = (req, res) => {
 }
 
 
-
+// Login code for User
 exports.login = (req, res) => {
     if (!req.body.email) {
         return res.status(400).json({ message: 'Please Enter Email ' })
@@ -94,7 +93,7 @@ exports.login = (req, res) => {
         })
 
 }
-
+// Login code for Shopkeeper
 exports.Shopkeeper_login = (req, res) => {
     if (!req.body.number) {
         return res.status(400).json({ message: 'Please Enter Number' })
@@ -113,14 +112,13 @@ exports.Shopkeeper_login = (req, res) => {
                 if (err) {
                     res.status(401).json({ success: 'false', message: 'Password wrong ' });
                 }
-                console.log(result)
                 if (result) {
                     const token = user[0].getJwtTokenShop();
 
                     res.status(200)
                         .json({
                             success: 'true',
-                            message: 'Auth Successful',
+                            message: 'Login as Shopkeeper Successful',
                             token: token
                         })
                     return 1;

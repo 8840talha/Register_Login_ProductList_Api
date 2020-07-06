@@ -11,7 +11,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
 
-
+// Connectioin to Db Using mongoose
 const Url = 'mongodb+srv://log:log1234@cluster0-gakn1.mongodb.net/loginDB'
 mongoose.connect(Url, {
     useUnifiedTopology: true,
@@ -39,8 +39,10 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+// Router middlewares
 app.use(users)
 app.use(products)
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT} `)
 })
